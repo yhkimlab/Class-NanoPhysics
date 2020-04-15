@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.linalg as lin
-import grid
+from modl import grid
 
 
 # Construct FDM coefficient

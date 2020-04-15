@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.linalg as lin
-import operator as oprt
-import inp
+from modl import operator as oprt
+from modl import inp
 
 # Inputs & Unit conversion
 k = inp.k / 0.529177
@@ -54,12 +54,12 @@ class waveF(grid):
 class Potential(grid):
     def __init__(self, L, n):
         grid.__init__(self, L, n)
-	self.grd[0] = 100000000
-	self.grd[1] = 100000000
-	self.grd[n-1]= 100000000
+        self.grd[0] = 100000000
+        self.grd[1] = 100000000
+        self.grd[n-1]= 100000000
         if pot == 0:                                   #no potential
-	   self.left = 0.5*n
-	   self.right = 0.5*n
+           self.left = 0.5*n
+           self.right = 0.5*n
            for i in range(1, n):
                self.grd[i] = 0                           # Make potential
 

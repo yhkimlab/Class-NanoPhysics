@@ -2,7 +2,6 @@ import numpy as np
 import numpy.linalg as lin
 from modl import grid
 
-
 # Construct FDM coefficient
 def fdmcoefficient(l):
     A = np.zeros((l,l))                # for coefficient of h^2m -> 0, m = [0, 2~l)

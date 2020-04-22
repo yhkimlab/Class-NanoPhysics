@@ -39,17 +39,17 @@ class Potential(grid):
         self.grd[n-1]=1000000000
 
         if pot == 1:                               # Harmonic
-           for i in range(1, 1000):
+           for i in range(1, n-1):
                x=L/(n-1)*i
                self.grd[i] = ((i-n//2))**2/(n//2)**2*pot_height
         
         if pot == 2:                               # Square well 
-           for i in range(400,600):
+           for i in range((n*4)//10,(n*6)//10):
                self.grd[i]=-pot_height
         
         
         if pot == 3:                               #Triangular
            self.grd[:]=10**6
            for i in range(n//2,n-1):
-               self.grd[i] = pot_height*abs(i-n//2)/(n//2)
+               self.grd[i] = pot_height*abs((i-n//2)/(n-2-n//2))
 

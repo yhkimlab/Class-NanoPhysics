@@ -7,6 +7,7 @@ import potential
 
 #Inputs & Unit conversion
 pot_height = inp.Potential_Height
+pot = inp.Potential_Shape
 n=inp.n
 l=3
 L=inp.L*1.88973
@@ -96,6 +97,9 @@ a = np.linspace(-L/2, L/2, n)
 for i in range(0,numstate):
     print ('%dth state eigenvalue is %f eV' %(i,w[num[i]]*27.211))
     plt.clf()
-    plt.plot( a, V.grd*np.max(np.abs(v[:,num[i]])*0.9/np.max(np.abs(V.grd[2:n-2]))),a,v[:,num[i]])
+    if pot == 0: 
+        plt.plot(a,v[:,num[i]])
+    else:
+        plt.plot( a, V.grd*np.max(np.abs(v[:,num[i]])*0.9/np.max(np.abs(V.grd[2:n-2]))),a,v[:,num[i]])
     plt.ylim((-np.max(np.abs(v[:,num[i]])),np.max(np.abs(v[:,num[i]]))))
     plt.savefig('%04d' %i)

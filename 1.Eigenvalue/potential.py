@@ -37,16 +37,9 @@ class Potential(grid):
         
         self.grd[0] = 1000000000
         self.grd[n-1]=1000000000
-        
 
-        if pot == 0:                               #Double barrier
-           for i in range(100, 201):
-               self.grd[i] = pot_height            
-           for i in range(300, 1000):
-               self.grd[i] = pot_height            # eV unit
-        
         if pot == 1:                               # Harmonic
-           for i in range(0, 1001):
+           for i in range(1, 1000):
                x=L/(n-1)*i
                self.grd[i] = ((i-n//2))**2/(n//2)**2*pot_height
         

@@ -1,7 +1,10 @@
 # Input parameter                    
-L  = 100     # Box Length (Angstrom = 10^-10 m)
-n  = 201     # Number of grid points.  (spacing = L/(n-1))      
-num = 10     # Number of states to search  !!!! Must be integer
-Potential_Height = 4           # eV
+L  = 100                         # Box Length (Angstrom = 10^-10 m)
+n  = 1001                        # Number of grid points.  (spacing = L/(n-1))      
+num = 6                          # Number of states to search  !!!! Must be integer
+Potential_Height = 100           # eV
+Potential_Shape  = 1             # 1: Harmonic Oscillator
+                                 # 2: Square Well
+                                 # 3: Triangular Well 
 
 

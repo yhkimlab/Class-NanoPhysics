@@ -48,7 +48,7 @@ class Potential(grid):
         if pot == 1:                               # Harmonic
            for i in range(0, 1001):
                x=L/(n-1)*i
-               self.grd[i] = 1/2*(x-L/(n-1)*500)**2/2500*5.73436/1.88973**2*pot_height/10*27.211
+               self.grd[i] = ((i-n//2))**2/(n//2)**2*pot_height
         
         if pot == 2:                               # Square well 
            for i in range(400,600):

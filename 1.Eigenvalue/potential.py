@@ -50,6 +50,6 @@ class Potential(grid):
         
         if pot == 3:                               #Triangular
            self.grd[:]=10**6
-           for i in range(500,1001):
-               self.grd[i]=pot_height*abs(i-500)/200
+           for i in range(n//2,n-1):
+               self.grd[i] = pot_height*abs(i-n//2)/(n//2)
 

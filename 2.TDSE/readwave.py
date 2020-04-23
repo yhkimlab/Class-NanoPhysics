@@ -70,6 +70,6 @@ import os, sys
 
 ### Generate a movie from PNG files ###
 
-os.system('convert -delay 10 -loop 1000 -quality 100 -resize 500x500 *.png movie.gif' )
-
-
+os.system('convert -delay 10 -loop 1000 -quality 100 -resize 500x500 *.png movie.gif')
+os.system('mkdir pngfile')
+os.system('mv case_* pngfile')

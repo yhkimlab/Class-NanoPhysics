@@ -4,7 +4,7 @@ from modl import operator as oprt
 from modl import inp
 
 # Inputs & Unit conversion
-k = inp.k / 0.529177
+k = (inp.E*2/27.211)**0.5
 pot = inp.Potential_Shape
 pot_height = inp.Potential_Height
 
@@ -37,14 +37,24 @@ class waveF(grid):
         self.t_dt = oprt.time_operator(L, n, l, dt, self.dx) # make a time operator
         self.integral = 0.
         self.dxx=np.float128(L/n)
-        for i in range(n):                                   # wave packet initialize (gaussian)
-            if (i > n*0/10 and i < n*9/10):
-                self.grd[i] = np.exp(-(i*self.dxx-0.3*n*self.dxx)**2/10)
-            else:
-                self.grd[i] = 0. + 0.j
-        self.grd /= lin.norm(self.grd)                       # Fix to normalize
-        for i in range(n):
-            self.grd[i] = self.grd[i]*np.exp(1j*k*(i*self.dxx-0.3*n*self.dxx))  #Wave packet
+        if pot == 4:
+            for i in range(n):                                   # wave packet initialize (gaussian)
+                if (i > n*4/10 and i < n*6/10):
+                    self.grd[i] = np.exp(-(i*self.dxx-0.5*n*self.dxx)**2/10)
+                else:
+                    self.grd[i] = 0. + 0.j
+            self.grd /= lin.norm(self.grd)                       # Fix to normalize
+            for i in range(n):
+                self.grd[i] = self.grd[i]*np.exp(1j*k*(i*self.dxx-0.5*n*self.dxx))  #Wave packet
+        else:
+            for i in range(n):                                   # wave packet initialize (gaussian)
+                if (i > n*0/10 and i < n*4/10):
+                    self.grd[i] = np.exp(-(i*self.dxx-0.3*n*self.dxx)**2/10)
+                else:
+                    self.grd[i] = 0. + 0.j
+            self.grd /= lin.norm(self.grd)                       # Fix to normalize
+            for i in range(n):
+                self.grd[i] = self.grd[i]*np.exp(1j*k*(i*self.dxx-0.3*n*self.dxx))  #Wave packet
 
 # Time propagating
     def next_step(self):
@@ -92,4 +102,17 @@ class Potential(grid):
             for i in range((55*n)//100,(56*n)//100):
                 self.grd[i] = pot_height                   # eV unit
                 self.grd[i] = self.grd[i]/27.211          # eV -> Har 
+
+        if pot == 4:                               # Square well
+            self.left = 0.6*n
+            self.right = 0.6*n
+            for i in range(2, n-2):
+                self.grd[i] = 0                           # Make potential
+            for i in range(2,(n*4)//10):
+                self.grd[i]= pot_height
+                self.grd[i] = self.grd[i]/27.211          # eV -> Har
+            for i in range((n*6)//10,n-2):
+                self.grd[i]= pot_height
+                self.grd[i] = self.grd[i]/27.211          # eV -> Har
+
 

@@ -9,13 +9,12 @@ from matplotlib import pyplot as plt
 
 atomic_unit_of_time_to_fs = 2.418884326509E-2
 L=inp.L * 1.88973
-n=inp.n
 l = 3   # Number of FDM points (2l+1) Here, 7-points   
 nt=inp.nstep
-dt=inp.dt
-k = inp.k / 0.529177
+dt = 0.1/atomic_unit_of_time_to_fs
 pot = inp.Potential_Shape
 pot_height = inp.Potential_Height
+n = inp.n
 dx=L/n
 
 # Construct Hamiltonian using Potential and Laplacian
@@ -26,12 +25,11 @@ E,phi = np.linalg.eigh(H)
 
 # Make wave fucntion with basis (also construct it's operator)
 
-wave = grd.waveF(L, inp.n, l, inp.dt)
+wave = grd.waveF(L, inp.n, l)
 
 c_n =(wave.grd).dot(np.conjugate(phi))
 Psi = c_n.dot(phi)
-
-tt=np.linspace(0, (nt-1)*dt,nt)
+tt = np.linspace(0, (nt-1)*dt,nt)
 z=np.zeros((n,n), dtype=complex)
 Psi_t = np.zeros((nt,n), dtype =complex)
 xx=np.linspace(0, L, n)
@@ -48,7 +46,7 @@ poten = grd.Potential(L, inp.n)
 saveprob=[]
 for i in range(nt):
     for j in range(n):
-        z[:,j] = c_n[j]*(phi[:,j]*np.exp(1j*E[j]*(tt[i])))
+        z[:,j] = c_n[j]*(phi[:,j]*np.exp(-1j*E[j]*(tt[i])))
     Psi_t[i, :] = np.sum(z, 1)
     reflec = np.float64(0)
     trans = np.float64(0)

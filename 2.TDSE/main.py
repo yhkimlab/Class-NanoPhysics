@@ -8,10 +8,11 @@ atomic_unit_of_time_to_fs = 2.418884326509E-2
 angsL = inp.L * 1.88973
 l = 3
 nstep = inp.nstep
+dt = 0.01/atomic_unit_of_time_to_fs
 
 
 # Make wave fucntion (also construct it's operator)
-wave = grid.waveF(angsL, inp.n, l, inp.dt)
+wave = grid.waveF(angsL, inp.n, l, dt)
 # Save wave function as txt
 f = open("wave.txt",'w')
 f.write("# t(fs) " + grid.grid(angsL, inp.n).plot_grid())
@@ -25,18 +26,18 @@ inten=np.zeros(inp.n)
 saveprob = []
 # Time propagation
 for i in range(nstep):
-    for j in range(nstep):
+    for j in range(0, 10):
         wave.next_step()
-        reflec = 0
-        trans = 0 
-        #counting
-        prob = np.abs(wave.grd)**2
-        for k in range(0, inp.n):
-            if k <= poten.left :
-                reflec += prob[k]
-            if k > poten.right :
-                trans += prob[k]
-    t = (i+1) * j * inp.dt * atomic_unit_of_time_to_fs
+    reflec = 0
+    trans = 0 
+    #counting
+    prob = np.abs(wave.grd)**2
+    for k in range(0, inp.n):
+        if k <= poten.left :
+            reflec += prob[k]
+        if k > poten.right :
+            trans += prob[k]
+    t = (i+1)*10 * dt * atomic_unit_of_time_to_fs
     f.write("%.6f" % t + wave.plot_grid())
     saveprob.append('%.6f    %.6f     %.6f\n' %(t,reflec,trans))
 f.close()

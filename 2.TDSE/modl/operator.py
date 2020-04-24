@@ -26,7 +26,7 @@ def fdmcoefficient(l):
 class Operator:
     def __init__(self, n):
         self.oprt = np.zeros((n, n))
-        self.oprt = np.array(self.oprt, dtype = np.float128)
+        self.oprt = np.array(self.oprt, dtype = np.float64)
 
     def oprtprint(self):
         print (self)                       # print Name
@@ -73,10 +73,10 @@ class Hamiltonian(Operator):
 class time_operator(Operator):
     def __init__(self, L, n, l, dt, dx):
         Operator.__init__(self, n)
-        self.oprt        = np.array(self.oprt, dtype = np.complex256)
+        self.oprt        = np.array(self.oprt, dtype = np.complex64)
         self.H           = Hamiltonian(L, n, l, dx)
         self.exp_iHdt_2  = np.eye(n) + 1.j * self.H.oprt * dt / 2.
-        self.exp_iHdt_2  = np.array(self.exp_iHdt_2, dtype = np.complex128)
+        self.exp_iHdt_2  = np.array(self.exp_iHdt_2, dtype = np.complex64)
         self.exp_iHdt_2  = lin.inv(self.exp_iHdt_2)
         self.exp_miHdt_2 = np.zeros_like(self.oprt)
         self.exp_miHdt_2 = np.eye(n) - 1.j * self.H.oprt * dt / 2.

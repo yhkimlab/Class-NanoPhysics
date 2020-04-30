@@ -1,31 +1,29 @@
 import numpy as np
-from modl import grd
-from modl import inp
 import numpy.linalg as lin
-from modl import operation
+from modl import operator, Input
 from matplotlib import pyplot as plt
 
 #Inputs & Unit conversion
 
 atomic_unit_of_time_to_fs = 2.418884326509E-2
-L=inp.L * 1.88973
+L=Input.L * 1.88973
 l = 3   # Number of FDM points (2l+1) Here, 7-points   
-nt=inp.nstep
+nt=Input.nstep
 dt = 0.1/atomic_unit_of_time_to_fs
-pot = inp.Potential_Shape
-pot_height = inp.Potential_Height
-n = inp.n
+pot = Input.Potential_Shape
+pot_height = Input.Potential_Height
+n = Input.n
 dx=L/n
 
 # Construct Hamiltonian using Potential and Laplacian
 # Get Eigenvalue & vectors of the hamiltonian
 
-H = operation.Hamiltonian(L,n,l,dx)
+H = operator.Hamiltonian(L,n,l,dx)
 E,phi = np.linalg.eigh(H)
 
 # Make wave fucntion with basis (also construct it's operator)
 
-wave = grd.waveF(L, inp.n, l)
+wave = operator.wave(L, Input.n, l)
 
 c_n =(wave.grd).dot(np.conjugate(phi))
 Psi = c_n.dot(phi)
@@ -41,7 +39,7 @@ for i in range(0, n):
     f.write('  %.6f  '%xx[i])
 f.write('\n')
 
-poten = grd.Potential(L, inp.n)
+poten = operator.Potential(L, Input.n)
 
 saveprob=[]
 for i in range(nt):
@@ -68,7 +66,7 @@ for i in range(nt):
     saveprob.append('%.6f    %.6f     %.6f\n' %(t,reflec,trans))
 
 f2 = open("Potential.txt",'w')
-f2.write(grd.Potential(L, inp.n).plot_grid())
+f2.write(operator.Potential(L, Input.n).plot_grid())
 f2.close()
 
 f3 = open("Probablity.txt",'w')

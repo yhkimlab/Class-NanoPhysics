@@ -1,28 +1,28 @@
 import numpy as np
-from modl import grid, inp
+from modl import operator, Input 
 
 
 #Inputs & Unit conversion
 
 atomic_unit_of_time_to_fs = 2.418884326509E-2
-angsL = inp.L * 1.88973
+angsL = Input.L * 1.88973
 l = 3
-nstep = inp.nstep
+nstep = Input.nstep
 dt = 0.01/atomic_unit_of_time_to_fs
 
 
 # Make wave fucntion (also construct it's operator)
-wave = grid.waveF(angsL, inp.n, l, dt)
+wave = operator.wave(angsL, Input.n, l, dt)
 # Save wave function as txt
 f = open("wave.txt",'w')
-f.write("# t(fs) " + grid.grid(angsL, inp.n).plot_grid())
+f.write("# t(fs) " + operator.grid(angsL, Input.n).plot_grid())
 f.write("  0.0000 " + wave.plot_grid())
 reflec = np.float64(0)
 trans = np.float64(0)
-poten = grid.Potential(angsL, inp.n)
+poten = operator.Potential(angsL, Input.n)
 
 
-inten=np.zeros(inp.n)
+inten=np.zeros(Input.n)
 saveprob = []
 # Time propagation
 for i in range(nstep):
@@ -32,7 +32,7 @@ for i in range(nstep):
     trans = 0 
     #counting
     prob = np.abs(wave.grd)**2
-    for k in range(0, inp.n):
+    for k in range(0, Input.n):
         if k <= poten.left :
             reflec += prob[k]
         if k > poten.right :
@@ -43,7 +43,7 @@ for i in range(nstep):
 f.close()
 # Print Potential Shape
 f2 = open("Potential.txt",'w')
-f2.write(grid.Potential(angsL, inp.n).plot_grid())
+f2.write(operator.Potential(angsL, Input.n).plot_grid())
 f2.close()
 
 f3 = open("Probablity.txt",'w')

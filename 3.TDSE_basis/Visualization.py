@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from modl import  inp
+from modl import  Input
 
 
 st=0

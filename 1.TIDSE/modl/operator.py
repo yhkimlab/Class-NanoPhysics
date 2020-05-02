@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.linalg as lin
-import Input
+from modl import Input
 
 #parameter  
 pot_height = Input.Potential_Height/27.211

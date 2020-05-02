@@ -1,9 +1,7 @@
 import numpy as np
 import numpy.linalg as lin
-import operator as oprt
-import Input
 from matplotlib import pyplot as plt
-import hamiltonian
+from modl import operator, Input
 
 #Inputs & Unit conversion
 pot_height = Input.Potential_Height/27.211
@@ -16,8 +14,8 @@ numstate = Input.num
 # Define Hamiltonian using Potential and Laplacian
 def Hamiltonian(L,n,l,dx):
     Hamiltonian = np.zeros((n,n))
-    V = hamiltonian.Potential(L, n)
-    L = hamiltonian.Laplacian(n, l, dx)                   # h- = 1, m_e = 1
+    V = operator.Potential(L, n)
+    L = operator.Laplacian(n, l, dx)                   # h- = 1, m_e = 1
     Hamiltonian = -L.oprt / 2. + V.oprt    # H = - (h-^2/2m) L + V
     return Hamiltonian
 
@@ -27,7 +25,7 @@ dx=L/(n-1)
 dn=np.ones(n)/dx**2
 dno=np.ones(n-1)*(-1/2)/dx**2
 
-V = hamiltonian.Potential(L,n)
+V = operator.Potential(L,n)
 H = Hamiltonian(L, n, l, dx)
 
 #Diagonalize Hamiltonian to get Eigenvalues
@@ -46,8 +44,10 @@ for i in range(0,numstate):
 
 plt.plot(a,V.grd*27.211)
 plt.ylim(0,pot_height*27.211)
+plt.ylabel('Energy [eV]')
+plt.xlabel('Box [Angstrom]')
 plt.show()
-
+plt.savefig('Total.png')
 
 #Making figure for individual eigenstate
 for i in range(0,numstate):

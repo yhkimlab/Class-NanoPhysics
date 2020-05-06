@@ -164,18 +164,6 @@ class Potential(grid):
                 self.grd[i]= pot_height
                 self.grd[i] = self.grd[i]/27.211          # eV -> Har
 
-        if pot == 5:                                   #Double barrier(Resonant)
-            self.left = 0.6*n
-            self.right = 1213  
-            for i in range(2, n-2):
-                self.grd[i] = 0                           # Make potential
-            for i in range(1200, 1204):
-                self.grd[i] = pot_height                   # eV unit
-                self.grd[i] = self.grd[i]/27.211          # eV -> Har
-            for i in range(1209,1213):
-                self.grd[i] = pot_height                   # eV unit
-                self.grd[i] = self.grd[i]/27.211          # eV -> Har
-
         self.oprt = np.zeros((n,n))
         for i in range(0, n):
             self.oprt[i, i]=self.grd[i]

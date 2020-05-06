@@ -1,5 +1,5 @@
-L = 2000              # Box Length (Angstrom = 10^-10 m)
-n = 3001                 # Number of grid points (spacing = L/(n-1))
+L = 100                 # Box Length (Angstrom = 10^-10 m)
+n = 1001                # Number of grid points (spacing = L/(n-1))
 nstep = 50              # Number of time steps * 0.1fs
 E = 1                   # Energy of packet (eV)
 Potential_Shape = 2     # Shape of potential

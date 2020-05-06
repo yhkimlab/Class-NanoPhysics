@@ -85,22 +85,22 @@ class Potential(grid):
         self.grd[0] = 1000000000
         self.grd[n-1]=1000000000
         
-
         if pot == 1:                               # Harmonic
            for i in range(1, 1000):
                x=L/(n-1)*i
                self.grd[i]=(i-n//2)**2/(n//2-1)**2*pot_height       
+
         if pot == 2:                               # Square well 
-           for i in range(0,400):
+           for i in range(1,(4*n)//10):
                self.grd[i] = pot_height
-           for i in range(400,601):
+           for i in range((4*n)//10,(6*n)//10+1):
                self.grd[i] = 0
-           for i in range(601,n-2):
+           for i in range((6*n)//10+1,n-1):
                self.grd[i] = pot_height
         
         if pot == 3:                               #Triangular
            self.grd[:]=10**6
-           for i in range(500,1001):
+           for i in range((5*n)//10,n):
                self.grd[i] = pot_height*abs(i-500)/200
 
         if pot == 4:                                   #Double barrier

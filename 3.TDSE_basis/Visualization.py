@@ -62,9 +62,10 @@ for i in range(0,nstep):
      plt.xlim(0,Input.L)
      plt.ylim(0,0.2)
      plt.legend()
+     plt.yticks([], [])
+     plt.xlabel('Box [Angstrom]')
      plt.savefig('case_%03d.png' %i)
      plt.clf()
-
 
 import os, sys
 

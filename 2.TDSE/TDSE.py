@@ -13,6 +13,7 @@ dt = 0.01/atomic_unit_of_time_to_fs
 
 # Make wave fucntion (also construct it's operator)
 wave = operator.wave(angsL, Input.n, l, dt)
+print(wave.grd)
 # Save wave function as txt
 f = open("wave.txt",'w')
 f.write("# t(fs) " + operator.grid(angsL, Input.n).plot_grid())

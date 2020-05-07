@@ -3,8 +3,8 @@ import numpy.linalg as lin
 from modl import Input
 
 #parameter  
-pot_height = Input.Potential_Height/27.211
-pot = Input.Potential_Shape
+pot_height_har = Input.pot_height_eV/27.211
+pot_shape = Input.pot_shape
 
 
 # Grid class is real space,, and mold for inheritance.
@@ -85,34 +85,34 @@ class Potential(grid):
         self.grd[0] = 1000000000
         self.grd[n-1]=1000000000
         
-        if pot == 1:                               # Harmonic
+        if pot_shape == 1:                               # Harmonic
            for i in range(1, 1000):
                x=L/(n-1)*i
-               self.grd[i]=(i-n//2)**2/(n//2-1)**2*pot_height       
+               self.grd[i]=(i-n//2)**2/(n//2-1)**2*pot_height_har       
 
-        if pot == 2:                               # Square well 
+        if pot_shape == 2:                               # Square well 
            for i in range(1,(4*n)//10):
-               self.grd[i] = pot_height
+               self.grd[i] = pot_height_har
            for i in range((4*n)//10,(6*n)//10+1):
                self.grd[i] = 0
            for i in range((6*n)//10+1,n-1):
-               self.grd[i] = pot_height
+               self.grd[i] = pot_height_har
         
-        if pot == 3:                               #Triangular
+        if pot_shape == 3:                               #Triangular
            self.grd[:]=10**6
            for i in range((5*n)//10,n):
-               self.grd[i] = pot_height*abs(i-500)/200
+               self.grd[i] = pot_height_har*abs(i-500)/200
 
-        if pot == 4:                                   #Double barrier
+        if pot_shape == 4:                                   #Double barrier
            self.left = 0.5*n
            self.right = n*20//40
            for i in range(2, n-2):
                self.grd[i] = 0                           # Make potential
            for i in range(400,412):
-               self.grd[i] = pot_height                   # eV unit
+               self.grd[i] = pot_height_har                   # eV unit
                self.grd[i] = self.grd[i]/27.211          # eV -> Har
            for i in range(427,439):
-               self.grd[i] = pot_height                   # eV unit
+               self.grd[i] = pot_height_har                   # eV unit
                self.grd[i] = self.grd[i]/27.211          # eV -> Har
 
         self.oprt=np.zeros((n,n))

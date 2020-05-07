@@ -53,7 +53,7 @@ plt.show()
 for i in range(0,numstate):
     print ('%dth state eigenvalue is %f eV' %(i+1,w[num[i]]*27.211))
     plt.clf()
-    plt.plot( a,v[:,num[i]], label='%dth eigenvalue = %f eV' %(i,w[num[i]]*27.211))
+    plt.plot( a,v[:,num[i]], label='%dth eigenvalue = %f eV' %(i+1,w[num[i]]*27.211))
     plt.legend()
     plt.ylim((-np.max(np.abs(v[:,num[i]])),np.max(np.abs(v[:,num[i]]))))
     plt.savefig('%04d' %(i+1))

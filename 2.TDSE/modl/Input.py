@@ -10,4 +10,4 @@ Potential_Shape = 2     # Shape of potential
                         # 4 = Finite well (Packet starts at middle)
 Potential_Height = 20   # eV
 Barrier_Thickness = 10  # Thickness of the barrier(Angstrom = 10^-10 m)
-                        # This is the input for only Potential_shape= 2 or 3!
+                        # Only for Potential_shape = 2 or 3!

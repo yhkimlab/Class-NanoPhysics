@@ -101,7 +101,7 @@ class Potential(grid):
         if pot_shape == 3:                               #Triangular
            self.grd[:]=10**6
            for i in range((5*n)//10,n):
-               self.grd[i] = pot_height_har*abs(i-500)/200
+               self.grd[i] = pot_height_har*abs(i-500)/500
 
         if pot_shape == 4:                                   #Double barrier
            self.left = 0.5*n

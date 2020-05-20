@@ -164,6 +164,17 @@ class Potential(grid):
                 self.grd[i]= pot_height_eV
                 self.grd[i] = self.grd[i]/27.211          # eV -> Har
 
+        if pot_shape == 5:                              #Alpha
+            self.left = n//2
+            self.right = n//2
+            for i in range(0, 500):
+                self.grd[i]=0
+            for i in range(500, 600):
+                self.grd[i]= 66/27.211
+            for i in range(600, n):
+                self.grd[i]= 50/27.211
+
+
         self.oprt = np.zeros((n,n))
         for i in range(0, n):
             self.oprt[i, i]=self.grd[i]

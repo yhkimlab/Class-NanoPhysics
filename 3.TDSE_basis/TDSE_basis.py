@@ -6,52 +6,70 @@ from matplotlib import pyplot as plt
 #Inputs & Unit conversion
 
 atomic_unit_of_time_to_fs = 2.418884326509E-2
-L=Input.L * 1.88973
+Lx = Input.Lx * 1.88973
 l = 3   # Number of FDM points (2l+1) Here, 7-points   
 nt=Input.nstep
 dt = 0.1/atomic_unit_of_time_to_fs
-pot = Input.Potential_Shape
-pot_height = Input.Potential_Height
-n = Input.n
-dx=L/n
+pot_shape = Input.pot_shape      
+pot_height_eV = Input.pot_height_eV   
+ngx = Input.ngx
+dx=Lx/ngx
 
 # Construct Hamiltonian using Potential and Laplacian
 # Get Eigenvalue & vectors of the hamiltonian
 
-H = operator.Hamiltonian(L,n,l,dx)
+H = operator.Hamiltonian(Lx,ngx,l,dx)
 E,phi = np.linalg.eigh(H)
 
 # Make wave fucntion with basis (also construct it's operator)
 
-wave = operator.wave(L, Input.n, l)
+wave = operator.wave(Lx, ngx, l)
 
 c_n =(wave.grd).dot(np.conjugate(phi))
 Psi = c_n.dot(phi)
 tt = np.linspace(0, (nt-1)*dt,nt)
-z=np.zeros((n,n), dtype=complex)
-Psi_t = np.zeros((nt,n), dtype =complex)
-xx=np.linspace(0, L, n)
+z=np.zeros((ngx,ngx), dtype=complex)
+Psi_t = np.zeros((nt,ngx), dtype =complex)
+xx=np.linspace(0, Lx, ngx)
 
 
 f= open("wave.txt", 'w')
 f.write("# t(fs) " )
-for i in range(0, n):
+for i in range(0, ngx):
     f.write('  %.6f  '%xx[i])
 f.write('\n')
 
-poten = operator.Potential(L, Input.n)
+poten = operator.Potential(Lx, ngx)
 
 saveprob=[]
+
+
+
+####Linear combination for Bound state###
+
+bounce=np.zeros(ngx, complex)
+
 for i in range(nt):
-    for j in range(n):
-        z[:,j] = c_n[j]*(phi[:,j]*np.exp(-1j*E[j]*(tt[i])))
-    Psi_t[i, :] = np.sum(z, 1)
+    if(Input.lpacket == 0):
+        for j in range(ngx):
+            z[:,j] = c_n[j]*(phi[:,j]*np.exp(-1j*E[j]*(tt[i])))
+        Psi_t[i,:] = np.sum(z,1)
+    if(Input.lpacket == 1):
+        bounce=0
+        for j in range(0, Input.ncombistates):
+            bounce += phi[:,j]*np.exp(-1j*E[j]*(tt[i]))
+            #for i in range(0, n):
+            #    print ('%.10f' %np.real(bounce[i]))
+        a=np.sqrt(np.sum(bounce*np.conjugate(bounce)))*dx
+        Psi_t[i,:]=bounce/a/5
+
+
     reflec = np.float64(0)
     trans = np.float64(0)
 
 #counting
     prob = np.abs(Psi_t[i,:])**2
-    for k in range(0, n):
+    for k in range(0, ngx):
             if k <= poten.left :
                 reflec += prob[k]
             if k > poten.right :
@@ -60,13 +78,13 @@ for i in range(nt):
 # Save wave function as txt
     t=i*dt*atomic_unit_of_time_to_fs
     f.write('%.6f' %t)
-    for k in range(0, n):
+    for k in range(0, ngx):
         f.write('  %.8f  ' %prob[k])
     f.write('\n')
     saveprob.append('%.6f    %.6f     %.6f\n' %(t,reflec,trans))
 
 f2 = open("Potential.txt",'w')
-f2.write(operator.Potential(L, Input.n).plot_grid())
+f2.write(operator.Potential(Lx,ngx).plot_grid())
 f2.close()
 
 f3 = open("Probablity.txt",'w')

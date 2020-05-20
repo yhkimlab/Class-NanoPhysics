@@ -2,11 +2,12 @@ import numpy as np
 import numpy.linalg as lin
 from modl import Input
 
+
 # Inputs & Unit conversion
-k = (Input.E*2/27.211)**0.5
-pot = Input.Potential_Shape
-pot_height = Input.Potential_Height
-thickness = Input.Barrier_Thickness
+k = (Input.ewave*2/27.211)**0.5
+pot_shape = Input.pot_shape        
+pot_height_eV = Input.pot_height_eV    
+barrier_thickness = Input.barrier_thickness
 
 # Grid class is real space,, and mold for inheritance.
 class grid:
@@ -36,7 +37,7 @@ class wave(grid):
         self.integral = 0.
         self.dxx=np.float64(L/n)
 
-        if pot == 4:
+        if pot_shape == 4:
             for i in range(n):                                   # wave packet initialize (gaussian)
                 if (i > n*4/10 and i < n*6/10):
                     self.grd[i] = np.exp(-(i*self.dxx-0.5*n*self.dxx)**2/10)
@@ -74,53 +75,77 @@ class Potential(grid):
         self.grd[0] = 100000000
         self.grd[1] = 100000000
         self.grd[n-1]= 100000000
-        if pot == 0:                                   #no potential
+        if pot_shape == 0:                                   #no potential
            self.left = 0.5*n
            self.right = 0.5*n
            for i in range(1, n):
                self.grd[i] = 0                           # Make potential
 
-        if pot == 1:                                   #Step potential
+        if pot_shape == 1:                                   #Step potential
            self.left = 0.5*n
            self.right = 0.5*n
            for i in range(2, n-2):
                self.grd[i] = 0                           # Make potential
            for i in range((n//2),(n-2)):
-               self.grd[i] = pot_height                   # eV unit
+               self.grd[i] = pot_height_eV                 # eV unit
                self.grd[i] = self.grd[i]/27.211          # eV -> Har
 
-        if pot == 2:                                   #Potential barrier
+        if pot_shape == 2:                                   #Potential barrier
            self.left = 0.5*n
            self.right = 0.5*n
            for i in range(2, n-2):
                self.grd[i] = 0                           # Make potential
            for i in range((5*n)//10,(5*n)//10+thickness*10):
-               self.grd[i] = pot_height                   # eV unit
+               self.grd[i] = pot_height_eV                  # eV unit
                self.grd[i] = self.grd[i]/27.211          # eV -> Har
 
-        if pot == 3:                                   #Double barrier
+        if pot_shape == 3:                                   #Double barrier
             self.left = (45*n)//100-thickness*10
             self.right = (50*n)//100+thickness*10
             for i in range(2, n-2):
                 self.grd[i] = 0                           # Make potential
             for i in range((45*n)//100-thickness*10,(45*n)//100):
-                self.grd[i] = pot_height                   # eV unit
+                self.grd[i] = pot_height_eV                   # eV unit
                 self.grd[i] = self.grd[i]/27.211          # eV -> Har
             for i in range((50*n)//100,(50*n)//100+thickness*10):
-                self.grd[i] = pot_height                   # eV unit
+                self.grd[i] = pot_height_eV                   # eV unit
                 self.grd[i] = self.grd[i]/27.211          # eV -> Har
 
-        if pot == 4:                                   # Square well
+        if pot_shape == 4:                                   # Square well
             self.left = (n*4)//10
             self.right = (n*6)//10
             for i in range(2, n-2):
                 self.grd[i] = 0                           # Make potential
             for i in range(2,(n*4)//10):
-                self.grd[i]= pot_height
+                self.grd[i]= pot_height_eV
                 self.grd[i] = self.grd[i]/27.211          # eV -> Har
             for i in range((n*6)//10,n-2):
-                self.grd[i]= pot_height
+                self.grd[i]= pot_height_eV
                 self.grd[i] = self.grd[i]/27.211          # eV -> Har
+
+        if pot_shape == 5:                               #Harmonic well
+            self.left = n//2
+            self.right = n//2
+            for i in range(1, n-1):
+                x=L/(n-1)*i
+                self.grd[i]=(i-n//2)**2/(n//2-1)**2*pot_height_eV/27.211
+
+        if pot_shape == 6:                               #Triangular
+           self.left = n//2
+           self.right = n//2
+           self.grd[:]=10**6
+           for i in range((5*n)//10,n):
+               self.grd[i] = pot_height_eV/27.211*abs(i-500)/500
+
+        if pot_shape == 7:                              #Alpha
+            self.left = n//2
+            self.right = n//2
+            for i in range(0, 500):
+                self.grd[i]=0
+            for i in range(500, 600):
+                self.grd[i]=66/27.211
+            for i in range(600, n):
+                self.grd[i]=50/27.211
 
         self.oprt = np.zeros((n,n))
         for i in range(0, n):

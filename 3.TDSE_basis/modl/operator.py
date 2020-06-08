@@ -154,24 +154,25 @@ class Potential(grid):
 
 
 # Construct FDM coefficient
+# Define FDM points & coefficients (Here, 7-points FDM)
+def fdmcoefficient(p):
+    a=np.zeros((2*p+1,2*p+1))
+    b=np.zeros(2*p+1)
+    c=np.zeros(2*p+1)
 
-def fdmcoefficient(l):
-    A = np.zeros((l,l))                # for coefficient of h^2m -> 0, m = [0, 2~l)
-    C = np.zeros((l+1))                # df/dx^2 = sum C[m] f(a+mh) / h^2
+    for i in range(0, 2*p+1):
+        for j in range(0, 2*p+1):
+            a[i,j]= (j-p)**i
+    c[2]=2
+    a = lin.inv(a)
+    b= np.matmul(a, c)
 
-    for j in range(l):
-        for i in range(l):
-            A[i][j] = (j+1)**(2*(i+1)) # A_i,j = j^2i (for i,j = [1,l])
+    C=np.zeros((l+1))
 
-    A = lin.inv(A)
-
-    for i in range(l):
-        C[i+1] = A[i,0]                # C = A^-1 [1 0 ... 0]^T
-
-    for i in range(1,l+1):
-        C[0] += -2.*C[i]               # C[0] = -2 * sum[ C[1~l] ]
-
+    for i in range(0, l+1):
+        C[i]=b[i+l]
     return C
+
 
 # Mold for inheritance.
 class Operator:

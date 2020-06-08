@@ -64,14 +64,14 @@ class wave(grid):
 
 # Construct FDM coefficient
 # Define FDM points & coefficients (Here, 7-points FDM)
-def fdmcoefficient(p):
-    a=np.zeros((2*p+1,2*p+1))
-    b=np.zeros(2*p+1)
-    c=np.zeros(2*p+1)
+def fdmcoefficient(l):
+    a=np.zeros((2*l+1,2*l+1))
+    b=np.zeros(2*l+1)
+    c=np.zeros(2*l+1)
 
-    for i in range(0, 2*p+1):
-        for j in range(0, 2*p+1):
-            a[i,j]= (j-p)**i
+    for i in range(0, 2*l+1):
+        for j in range(0, 2*l+1):
+            a[i,j]= (j-l)**i
     c[2]=2
     a = lin.inv(a)
     b= np.matmul(a, c)

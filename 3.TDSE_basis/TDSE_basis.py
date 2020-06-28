@@ -2,6 +2,7 @@ import numpy as np
 import numpy.linalg as lin
 from modl import operator, Input
 from matplotlib import pyplot as plt
+import math
 
 #Inputs & Unit conversion
 
@@ -58,10 +59,14 @@ for i in range(nt):
         bounce=0
         for j in range(0, Input.ncombistates):
             bounce += phi[:,j]*np.exp(-1j*E[j]*(tt[i]))
-            #for i in range(0, n):
-            #    print ('%.10f' %np.real(bounce[i]))
         a=np.sqrt(np.sum(bounce*np.conjugate(bounce)))*dx
         Psi_t[i,:]=bounce/a/5
+
+    if(Input.lpacket == 2):
+        bounce=0
+        for j in range(0, Input.ncombistates):
+            z[:,j] = (1/np.sqrt(math.factorial(j+1)))*(phi[:,j]*np.exp(-1j*E[j]*(tt[i])))            
+        Psi_t[i,:] = np.sum(z,1)
 
 
     reflec = np.float64(0)

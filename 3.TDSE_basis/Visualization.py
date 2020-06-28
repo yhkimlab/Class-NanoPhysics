@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from modl import  Input
+from modl import Input
 
 
 st=0
@@ -49,6 +49,8 @@ x = np.linspace(st, Input.Lx, n-1)
 nL = np.size(L)
 store = np.zeros((nL-1,n))
 a = np.max(pot[5:np.size(pot)-5])
+if Input.pot_shape == 6 :
+    a = np.max(pot[n//2+3:np.size(pot)-5])
 
 for i in range(1, nL):
     tmp=L[i].split()
@@ -58,9 +60,10 @@ for i in range(1, nL):
 for i in range(0,nstep):
      plt.plot(x, store[i*1,1:n], label= 'Time = %.6f fs' %(store[i*1,0]))
      if a != 0 :
-     	plt.plot(x, pot[0:n-1]/a*0.15, label='Potential = %.3f eV ' %(a*27.211))
+        plt.plot(x, pot[0:n-1]/a*0.15, label='Potential = %.3f eV ' %(a*27.211))
      plt.xlim(0,Input.Lx)
      plt.ylim(0,0.2)
+
      plt.legend()
      plt.yticks([], [])
      plt.xlabel('Box [Angstrom]')

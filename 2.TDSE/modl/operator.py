@@ -8,6 +8,7 @@ k = (Input.ewave*2/27.211)**0.5
 pot_shape = Input.pot_shape
 pot_height_eV  = Input.pot_height_eV
 barrier_thickness = Input.barrier_thickness
+sigma = Input.dispersion_gaussian*1.88973
 
 # Grid class is real space,, and mold for inheritance.
 class grid:
@@ -41,7 +42,7 @@ class wave(grid):
         if pot_shape == 4:
             for i in range(n):                                   # wave packet initialize (gaussian)
                 if (i > (n*4)//10 and i < (n*6)//10):
-                    self.grd[i] = np.exp(-(i*self.dx-0.5*n*self.dx)**2/10)
+                    self.grd[i] = np.exp(-(i*self.dx-0.5*n*self.dx)**2/sigma)
                 else:
                     self.grd[i] = 0. + 0.j
             self.grd /= lin.norm(self.grd)                       # Fix to normalize
@@ -51,7 +52,7 @@ class wave(grid):
         else:
             for i in range(n):                                   # wave packet initialize (gaussian)
                 if (i > n*0/10 and i < n*4/10):
-                    self.grd[i] = np.exp(-(i*self.dx-0.3*n*self.dx)**2/10)
+                    self.grd[i] = np.exp(-(i*self.dx-0.3*n*self.dx)**2/sigma)
                 else:
                     self.grd[i] = 0. + 0.j
             self.grd /= lin.norm(self.grd)                       # Fix to normalize
@@ -177,6 +178,14 @@ class Potential(grid):
             for i in range(600, n):
                 self.grd[i]= 50/27.211
 
+        if pot_shape == 6:                              #Triangle
+            self.left = n//2
+            self.right = n//2
+            for i in range(2, n-2):
+                self.grd[i] = 0                           # Make potential
+            for i in range(500, 601):
+                self.grd[i] = pot_height_eV - 10*((i-500)/100)
+                self.grd[i] = self.grd[i]/27.211          # eV -> Har
 
         self.oprt = np.zeros((n,n))
         for i in range(0, n):

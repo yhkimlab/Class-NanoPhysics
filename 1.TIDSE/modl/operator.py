@@ -104,17 +104,21 @@ class Potential(grid):
            for i in range((5*n)//10,n):
                self.grd[i] = pot_height_har*abs(i-500)/500
 
-        if pot_shape == 4:                                   #Double barrier
+        if pot_shape == 4:                                   #Asymmetric infinite Well
+           self.left = 0.5*n
+           self.right = n*20//40
+           for i in range((5*n//10), n-2):
+               self.grd[i] = pot_height_har                 # eV unit
+
+        if pot_shape == 5:                                   #Double barrier
            self.left = 0.5*n
            self.right = n*20//40
            for i in range(2, n-2):
                self.grd[i] = 0                           # Make potential
            for i in range(400,412):
                self.grd[i] = pot_height_har                   # eV unit
-               self.grd[i] = self.grd[i]/27.211          # eV -> Har
            for i in range(427,439):
                self.grd[i] = pot_height_har                   # eV unit
-               self.grd[i] = self.grd[i]/27.211          # eV -> Har
 
         self.oprt=np.zeros((n,n))
         for i in range(0, n):

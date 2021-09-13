@@ -1,6 +1,4 @@
-# class-TDSE
-KAIST EE "Quantum Physics for Electronics" class
+# class-YHK-current
+KAIST EE YHK current semester class
 
-1. Diagonalize Hamiltonian with double barrier potential walls to get the confined eigenvalues.
-
-2 & 3. Using gaussian packet, solving time-dependent Schrodinger equation and visualize the result.
+2021 Fall "Qantum and Solid State Physics for Nanodevices"

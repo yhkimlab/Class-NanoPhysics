@@ -1,5 +1,5 @@
-# YHKimClass-SemiconductorPhysics
-KAIST EE Yong-Hoon Kim "Modern Semiconductor Physics" class
+# YHKimLab/Class-DevicePhysics
+KAIST EE Yong-Hoon Kim "Modern Semiconductor Device Physics" class
 
 2023 Fall "Modern Semiconductor Device Physics"; TA: Ryong Gyu Lee & Seunghyun Yu
 

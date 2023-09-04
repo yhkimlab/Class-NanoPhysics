@@ -1,4 +1,5 @@
-# class-YHKlab-current
-KAIST EE YHK current semester class
+# YHKimClass-SemiconductorPhysics
+KAIST EE Yong-Hoon Kim "Modern Semiconductor Physics" class
 
-2021 Fall "Qantum and Solid State Physics for Semiconductor Devices"
+2023 Fall "Modern Semiconductor Device Physics"; TA: Ryong Gyu Lee & Seunghyun Yu 
+2021 Fall "Quantum and Solid State Physics for Semiconductor Devices"; TA: Hyeonwoo Yeo & Ryong Gyu Lee
